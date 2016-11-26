@@ -5,6 +5,7 @@ import android.support.v4.widget.TextViewCompat;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -14,7 +15,11 @@ import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
+
 public class RestaurantsActivity extends AppCompatActivity {
+
+    public static final String TAG = RestaurantsActivity.class.getSimpleName();
+
 
     @Bind(R.id.locationTextView) TextView mLocationTextView;
     @Bind(R.id.listView) ListView mListView;
@@ -53,7 +58,8 @@ public class RestaurantsActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String location = intent.getStringExtra("location");    //Retrieve extended data from the intent.
-        mLocationTextView.setText("Here are all the restaurants near: " + location);
 
+        mLocationTextView.setText("Here are all the restaurants near: " + location);
     }
+
 }
