@@ -14,6 +14,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
+import java.io.IOException;
 
 
 public class RestaurantsActivity extends AppCompatActivity {
@@ -35,6 +39,7 @@ public class RestaurantsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurants);
+
 
         //find components with id
         ButterKnife.bind(this);
@@ -60,6 +65,37 @@ public class RestaurantsActivity extends AppCompatActivity {
         String location = intent.getStringExtra("location");    //Retrieve extended data from the intent.
 
         mLocationTextView.setText("Here are all the restaurants near: " + location);
+
+        getRestaurants(location);
     }
+
+    private void getRestaurants(String location) {
+        //create a new instance of our YelpService,
+        final YelpService yelpService = new YelpService();
+        // and call the findRestaurants() method (takes 2 arguments)
+        // create a new empty Callback to provide as the second argument
+        yelpService.findRestaurants(location, new Callback() {
+        //Our callback will have two methods to override: onFailure() and onResponse()
+
+            //onFailure() is triggered when our request fails (if we create a bad URL, for example)
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            //onResponse() is triggered when the request is successful.
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                try {
+         //create a new string, jsonData and set it to the string of the response body
+                    String jsonData = response.body().string();
+         // print the data to the logcat. If we catch any exceptions, we display their error messages.
+                    Log.v(TAG, jsonData);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        });
 
 }
