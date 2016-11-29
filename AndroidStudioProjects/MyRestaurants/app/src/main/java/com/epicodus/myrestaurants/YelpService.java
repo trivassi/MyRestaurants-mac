@@ -64,43 +64,48 @@ public class YelpService {
 
         try {
             String jsonData = response.body().string();
+
             if (response.isSuccessful()) {
                 JSONObject yelpJSON = new JSONObject(jsonData);
-                JSONArray businessesJSON = yelpJSON.getJSONArray("businesses");
+                JSONArray businessesJSON = yelpJSON.getJSONArray("businesses"); //get from YELP JSON 'businesses" array
+
                 for (int i = 0; i < businessesJSON.length(); i++) {
                     JSONObject restaurantJSON = businessesJSON.getJSONObject(i);
                     String name = restaurantJSON.getString("name");
-                    String phone = restaurantJSON.optString("display_phone", "Phone not available");
-                    String website = restaurantJSON.getString("url");
+                    String phone = restaurantJSON.optString("display_phone", "Phonen not available");
+                    String website = restaurantJSON.getString("website");
                     double rating = restaurantJSON.getDouble("rating");
-                    String imageUrl = restaurantJSON.getString("image_url");
-                    double latitude = restaurantJSON.getJSONObject("location")
-                            .getJSONObject("coordinate").getDouble("latitude");
-                    double longitude = restaurantJSON.getJSONObject("location")
-                            .getJSONObject("coordinate").getDouble("longitude");
+                    String imageUrl = restaurantJSON.getString("imageUrl");
+
+                    double latitude = restaurantJSON.getJSONObject("location").getJSONObject("coordinate").getDouble                           ("latitude");
+
+                    double longitude = restaurantJSON.getJSONObject("location").getJSONObject("coordinate").getDouble                           ("longitude");
+
                     ArrayList<String> address = new ArrayList<>();
-                    JSONArray addressJSON = restaurantJSON.getJSONObject("location")
-                            .getJSONArray("display_address");
+                    JSONArray addressJSON = restaurantJSON.getJSONObject("location").getJSONArray("display_address");
                     for (int y = 0; y < addressJSON.length(); y++) {
                         address.add(addressJSON.get(y).toString());
                     }
 
                     ArrayList<String> categories = new ArrayList<>();
                     JSONArray categoriesJSON = restaurantJSON.getJSONArray("categories");
-
                     for (int y = 0; y < categoriesJSON.length(); y++) {
                         categories.add(categoriesJSON.getJSONArray(y).get(0).toString());
                     }
-                    Restaurant restaurant = new Restaurant(name, phone, website, rating,
-                            imageUrl, address, latitude, longitude, categories);
+
+                    Restaurant restaurant = new Restaurant(name, phone, website, rating, imageUrl, address, latitude,                               longitude, categories);
+
                     restaurants.add(restaurant);
-                }
-            }
-        } catch (IOException e) {
+                } //for each business
+
+            } //if succesful
+        } catch (IOException e) {  //first try
             e.printStackTrace();
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return restaurants;
+            return restaurants;
+
     }
+
 }
