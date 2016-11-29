@@ -25,10 +25,12 @@ public class RestaurantsActivity extends AppCompatActivity {
     public static final String TAG = RestaurantsActivity.class.getSimpleName();
 
 
-    @Bind(R.id.locationTextView) TextView mLocationTextView;
-    @Bind(R.id.listView) ListView mListView;
+    @Bind(R.id.locationTextView)
+    TextView mLocationTextView;
+    @Bind(R.id.listView)
+    ListView mListView;
 
-    private String[] restaurants = new String[] {"Mi Mero Mole", "Mother's Bistro",
+    private String[] restaurants = new String[]{"Mi Mero Mole", "Mother's Bistro",
             "Life of Pie", "Screen Door", "Luc Lac", "Sweet Basil",
             "Slappy Cakes", "Equinox", "Miss Delta's", "Andina",
             "Lardo", "Portland City Grill", "Fat Head's Brewery",
@@ -56,7 +58,7 @@ public class RestaurantsActivity extends AppCompatActivity {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String restaurant = ((TextView)view).getText().toString();
+                String restaurant = ((TextView) view).getText().toString();
                 Toast.makeText(RestaurantsActivity.this, restaurant, Toast.LENGTH_LONG).show();
             }
         });
@@ -75,7 +77,7 @@ public class RestaurantsActivity extends AppCompatActivity {
         // and call the findRestaurants() method (takes 2 arguments)
         // create a new empty Callback to provide as the second argument
         yelpService.findRestaurants(location, new Callback() {
-        //Our callback will have two methods to override: onFailure() and onResponse()
+            //Our callback will have two methods to override: onFailure() and onResponse()
 
             //onFailure() is triggered when our request fails (if we create a bad URL, for example)
             @Override
@@ -87,9 +89,9 @@ public class RestaurantsActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 try {
-         //create a new string, jsonData and set it to the string of the response body
+                    //create a new string, jsonData and set it to the string of the response body
                     String jsonData = response.body().string();
-         // print the data to the logcat. If we catch any exceptions, we display their error messages.
+                    // print the data to the logcat. If we catch any exceptions, we display their error messages.
                     Log.v(TAG, jsonData);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -97,5 +99,8 @@ public class RestaurantsActivity extends AppCompatActivity {
             }
 
         });
+
+    }
+
 
 }

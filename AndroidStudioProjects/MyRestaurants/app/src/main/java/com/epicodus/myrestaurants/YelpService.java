@@ -60,19 +60,19 @@ public class YelpService {
     }
 
     public ArrayList<Restaurant> processResults(Response response) {
-        ArrayList<Restaurant> restaurants = new ArrayList<>();
+        ArrayList<Restaurant> restaurants = new ArrayList<>(); //create array to contain all restaurant objects
 
         try {
-            String jsonData = response.body().string();
+            String jsonData = response.body().string(); //transform the API resoonse into a string
 
             if (response.isSuccessful()) {
-                JSONObject yelpJSON = new JSONObject(jsonData);
+                JSONObject yelpJSON = new JSONObject(jsonData); //create JSON object if response is succesful
                 JSONArray businessesJSON = yelpJSON.getJSONArray("businesses"); //get from YELP JSON 'businesses" array
 
                 for (int i = 0; i < businessesJSON.length(); i++) {
                     JSONObject restaurantJSON = businessesJSON.getJSONObject(i);
                     String name = restaurantJSON.getString("name");
-                    String phone = restaurantJSON.optString("display_phone", "Phonen not available");
+                    String phone = restaurantJSON.optString("display_phone", "Phone not available"); //if no info available                     we set default value to "phone not available"
                     String website = restaurantJSON.getString("website");
                     double rating = restaurantJSON.getDouble("rating");
                     String imageUrl = restaurantJSON.getString("imageUrl");
@@ -93,18 +93,18 @@ public class YelpService {
                         categories.add(categoriesJSON.getJSONArray(y).get(0).toString());
                     }
 
-                    Restaurant restaurant = new Restaurant(name, phone, website, rating, imageUrl, address, latitude,                               longitude, categories);
+                    Restaurant restaurant = new Restaurant(name, phone, website, rating, imageUrl, address, latitude,                               longitude, categories); //create new restaurant object in loop
 
-                    restaurants.add(restaurant);
+                    restaurants.add(restaurant); //add it to array
                 } //for each business
 
             } //if succesful
         } catch (IOException e) {  //first try
             e.printStackTrace();
-        } catch (JSONException e) {
+        } catch (JSONException e) { //catch exceptions
             e.printStackTrace();
         }
-            return restaurants;
+            return restaurants; //return list of restaurants
 
     }
 
