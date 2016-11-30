@@ -1,4 +1,4 @@
-package com.epicodus.myrestaurants;
+package com.epicodus.myrestaurants.models;
 
 import java.util.ArrayList;
 
@@ -17,7 +17,9 @@ public class Restaurant {
     private double mLongitude;
     private ArrayList<String> mCategories = new ArrayList<>();
 
-    public Restaurant (String name, String phone, String website, double rating, String imageUrl, ArrayList<String> address, double latitude, double longitude, ArrayList<String> categories) {
+    public Restaurant(String name, String phone, String website,
+                      double rating, String imageUrl, ArrayList<String> address,
+                      double latitude, double longitude, ArrayList<String> categories) {
         this.mName = name;
         this.mPhone = phone;
         this.mWebsite = website;
@@ -38,14 +40,14 @@ public class Restaurant {
     }
 
     public String getWebsite() {
-        return mWebsite;
+        return  mWebsite;
     }
 
     public double getRating() {
         return mRating;
     }
 
-    public String getImageUrl() {
+    public String getImageUrl(){
         return mImageUrl;
     }
 
@@ -64,5 +66,4 @@ public class Restaurant {
     public ArrayList<String> getCategories() {
         return mCategories;
     }
-
 }
