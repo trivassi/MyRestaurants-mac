@@ -29,12 +29,13 @@ public class Restaurant {
         this.mPhone = phone;
         this.mWebsite = website;
         this.mRating = rating;
-        this.mImageUrl = imageUrl;
+        this.mImageUrl = getLargeImageUrl(imageUrl);
         this.mAddress = address;
         this.mLatitude = latitude;
         this.mLongitude = longitude;
         this.mCategories = categories;
     }
+
 
     public String getName() {
         return mName;
@@ -70,5 +71,11 @@ public class Restaurant {
 
     public ArrayList<String> getCategories() {
         return mCategories;
+    }
+
+    //replaces the last characters in the image's filepath with the characters that correspond to the higher-quality version
+    public String getLargeImageUrl(String imageUrl) { //
+        String largeImageUrl = imageUrl.substring(0, imageUrl.length() - 6).concat("o.jpg");
+        return largeImageUrl;
     }
 }

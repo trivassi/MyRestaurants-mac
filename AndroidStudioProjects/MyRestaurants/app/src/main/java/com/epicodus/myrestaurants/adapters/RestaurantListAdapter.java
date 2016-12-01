@@ -27,6 +27,8 @@ import butterknife.ButterKnife;
  */
 //recyclerView.adapter will populate the data into RecyclerView & converts Java object into individual list item View
 public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAdapter.RestaurantViewHolder> {
+    private static final int MAX_WIDTH = 200;
+    private static final int MAX_HEIGHT = 200;
     private ArrayList<Restaurant> mRestaurants = new ArrayList<>();
     private Context mContext;
 
@@ -73,7 +75,12 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
         }
 
         public void bindRestaurant(Restaurant restaurant) { //method will set the contents of the layout's TextViews to the             attributes of a specific restaurant
-            Picasso.with(mContext).load(restaurant.getImageUrl()).into(mRestaurantImageView);//allow Picasso to handle the                  image loading from api
+            Picasso.with(mContext) ////allow Picasso to handle the image loading from api
+                    .load(restaurant.getImageUrl())
+                    .resize(MAX_WIDTH, MAX_WIDTH)
+                    .centerCrop()
+                    .into(mRestaurantImageView);
+
             mNameTextView.setText(restaurant.getName());
             mCategoryTextView.setText(restaurant.getCategories().get(0));
             mRatingTextView.setText("Rating: " + restaurant.getRating() + "/5");
