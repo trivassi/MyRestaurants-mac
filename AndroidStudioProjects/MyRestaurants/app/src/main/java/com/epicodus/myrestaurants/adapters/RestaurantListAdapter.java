@@ -69,7 +69,7 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
             super(itemView);
             ButterKnife.bind(this, itemView);
             mContext = itemView.getContext();
-            itemView.setOnClickListener(this);
+            itemView.setOnClickListener(this); //we set our listener in the RestaurantViewHolder constructor.
         }
 
         public void bindRestaurant(Restaurant restaurant) { //method will set the contents of the layout's TextViews to the             attributes of a specific restaurant
@@ -79,12 +79,13 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
             mRatingTextView.setText("Rating: " + restaurant.getRating() + "/5");
         }
 
-        @Override
+        @Override //ItemView is clicked, the onClick() method will execute.
+
         public void onClick(View view) {
-            int itemPosition = getLayoutPosition();
-            Intent intent = new Intent(mContext, RestaurantDetailActivity.class);
+            int itemPosition = getLayoutPosition(); //getLayoutPosition() to retrieve the position of the specific list item clicked
+            Intent intent = new Intent(mContext, RestaurantDetailActivity.class); //creates an intent to navigate to our                        RestaurantDetailActivity with the itemPosition and the ArrayList of restaurants included as intent extras
             intent.putExtra("position", itemPosition);
-            intent.putExtra("restaurants", Parcels.wrap(mRestaurants));
+            intent.putExtra("restaurants", Parcels.wrap(mRestaurants)); //to include entire ArrayList the Parcels.wrap() method                 handles the process of serializing the data using Android's Parcelable interface
             mContext.startActivity(intent);
         }
     }

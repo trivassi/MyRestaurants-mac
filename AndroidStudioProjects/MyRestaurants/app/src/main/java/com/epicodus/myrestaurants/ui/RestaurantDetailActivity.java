@@ -26,11 +26,12 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_restaurant_detail);
         ButterKnife.bind(this);
 
-        mRestaurants = Parcels.unwrap(getIntent().getParcelableExtra("restaurants"));
-        int startingPosition = getIntent().getIntExtra("position", 0);
+        mRestaurants = Parcels.unwrap(getIntent().getParcelableExtra("restaurants"));//pull out our ArrayList<Restaurant>                  Parcelable using the unwrap() method on our "restaurants" intent extra
+        int startingPosition = getIntent().getIntExtra("position", 0);//also retrieve the position int included as an intent extra
 
+        // create a new pager adapter called adapterViewPager, providing the mRestaurants as an argument
         adadpterViewPager = new RestaurantPagerAdapter(getSupportFragmentManager(), mRestaurants);
-        mViewPager.setAdapter(adadpterViewPager);
-        mViewPager.setCurrentItem(startingPosition);
+        mViewPager.setAdapter(adadpterViewPager);//instruct our ViewPager to use this new adapter
+        mViewPager.setCurrentItem(startingPosition);//set the current item to the position of the item that was just clicked on
     }
 }

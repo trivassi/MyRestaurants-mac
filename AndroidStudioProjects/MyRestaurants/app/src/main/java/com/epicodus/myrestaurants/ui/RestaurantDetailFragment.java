@@ -34,22 +34,23 @@ public class RestaurantDetailFragment extends Fragment {
 
     private Restaurant mRestaurant;
 
+//used instead of a constructor and returns a new instance of our RestaurantDetailFragment
     public static RestaurantDetailFragment newInstance(Restaurant restaurant) {
         // Required empty public constructor
         RestaurantDetailFragment restaurantDetailFragment = new RestaurantDetailFragment();
         Bundle args = new Bundle();
-        args.putParcelable("restaurant", Parcels.wrap(restaurant));
-        restaurantDetailFragment.setArguments(args);
-        return restaurantDetailFragment;
+        args.putParcelable("restaurant", Parcels.wrap(restaurant)); //use the Parceler library to add our restaurant object to our          bundle
+        restaurantDetailFragment.setArguments(args);  //set the bundle as the argument for our new RestaurantDetailFragment.
+        return restaurantDetailFragment; //allows us to access necessary data when a new instance of our fragment is created
     }
 
-    @Override
+    @Override //called when the fragment is created
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mRestaurant = Parcels.unwrap(getArguments().getParcelable("restaurant"));
+        mRestaurant = Parcels.unwrap(getArguments().getParcelable("restaurant")); //unwrap our restaurant object from the                       arguments we added in the newInstance() method
     }
 
-    @Override
+    @Override //this restaurant object is then used to set our ImageView and TextViews
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 //          Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_restaurant_detail, container, false);
