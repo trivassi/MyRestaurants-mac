@@ -13,31 +13,42 @@ import android.widget.TextView;
 
 import com.epicodus.myrestaurants.Constants;
 import com.epicodus.myrestaurants.R;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+//    private SharedPreferences mSharedPreferences; //create member variables to store reference to shared preferences tool itself
+//    private SharedPreferences.Editor mEditor; //dedicated tool we must use to edit them
 
-    private SharedPreferences mSharedPreferences; //create member variables to store reference to shared preferences tool itself
-    private SharedPreferences.Editor mEditor; //dedicated tool we must use to edit them
+    private DatabaseReference mSearchedLocationReference;
 
     @Bind(R.id.findRestaurantsButton) Button mFindRestaurantsButton;
     @Bind(R.id.locationEditText) EditText mLocationEditText;
-//    @Bind(R.id.appNameTextView) TextView mAppNameTextView;
+    @Bind(R.id.appNameTextView) TextView mAppNameTextView;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        mSearchedLocationReference = FirebaseDatabase
+                .getInstance()
+                .getReference()
+                .child(Constants.FIREBASE_CHILD_SEARCHED_LOCATION);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        mEditor = mSharedPreferences.edit();
+        Typeface ostrichFont = Typeface.createFromAsset(getAssets(), "fonts/ostrich-regular.ttf");
+        mAppNameTextView.setTypeface(ostrichFont);
 
-//        Typeface ostrichFont = Typeface.createFromAsset(getAssets(), "fonts/ostrich-regular.ttf");
-//        mAppNameTextView.setTypeface(ostrichFont);
+//        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+//        mEditor = mSharedPreferences.edit();
+
+
 
 
         mFindRestaurantsButton.setOnClickListener(this);
@@ -49,13 +60,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if (v == mFindRestaurantsButton) {
             String location = mLocationEditText.getText().toString();
-            if (!(location).equals("")) {
-                addToSharedPreferences(location);
-            }
+            saveLocationToFirebase(location);
+//            if (!(location).equals("")) {
+//                addToSharedPreferences(location);
+//            }
 // a new instance of the Intent class
 //two parameters: The current context, and the Activity class we want to start
             Intent intent = new Intent(MainActivity.this, RestaurantListActivity.class);
-//            intent.putExtra("location", location);
+            intent.putExtra("location", location);
             startActivity(intent);
 
             //Toast.makeText(MainActivity.this, "Hello World!", Toast.LENGTH_LONG).show();
@@ -64,14 +76,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    //which takes the user-inputted zip code as an argument
-    private void addToSharedPreferences(String location) {
-        //calls upon the editor to write this information to shared preferences.
-        mEditor.putString(Constants.PREFERENCES_LOCATION_KEY, location).apply();
-        //shared preference data must be in key-value pairs
-        // 1. key we've stored in our Constants file called PREFERENCES_LOCATION_KEY
-        // 2.zip code value we've passed in as an argument, location.
-        // Finally, we call apply() to save this information
+    private void saveLocationToFirebase(String location) {
+        mSearchedLocationReference.push().setValue(location);
     }
+
+
+    //which takes the user-inputted zip code as an argument
+//    private void addToSharedPreferences(String location) {
+//        //calls upon the editor to write this information to shared preferences.
+//        mEditor.putString(Constants.PREFERENCES_LOCATION_KEY, location).apply();
+//        //shared preference data must be in key-value pairs
+//        // 1. key we've stored in our Constants file called PREFERENCES_LOCATION_KEY
+//        // 2.zip code value we've passed in as an argument, location.
+//        // Finally, we call apply() to save this information
+//    }
 
 }

@@ -27,13 +27,13 @@ import okhttp3.Response;
 
 
 public class RestaurantListActivity extends AppCompatActivity {
-    private SharedPreferences mSharedPreferences; //call the dedicated PreferenceManager to access shared preferences
-    private String mRecentAddress;
-    public static final String TAG = RestaurantListActivity.class.getSimpleName();
+//    private SharedPreferences mSharedPreferences; //call the dedicated PreferenceManager to access shared preferences
+//    private String mRecentAddress;
+//    public static final String TAG = RestaurantListActivity.class.getSimpleName();
 
     @Bind(R.id.recyclerView) RecyclerView mRecyclerView;
-    private RestaurantListAdapter mAdapter;
 
+    private RestaurantListAdapter mAdapter;
     public ArrayList<Restaurant> mRestaurants = new ArrayList<>();
 
 // private String[] restaurants = new String[]{"Mi Mero Mole", "Mother's Bistro", "Chipotle", "Subway"};
@@ -55,13 +55,13 @@ public class RestaurantListActivity extends AppCompatActivity {
 
         getRestaurants(location);
 
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this); //retrieve our shared preferences from the preference manager
-        mRecentAddress = mSharedPreferences.getString(Constants.PREFERENCES_LOCATION_KEY, null);//pull data from it by calling getString() and providing the key that corresponds to the data we'd like to retrieve. also pass in the default value null
-        // The default value will be returned if the getString() method is unable to find a value that corresponds to the key we provided.
-        if (mRecentAddress != null) {
-            // we know we have a zip code saved, and we pass that zip code to our getRestaurants() method. As we know, the getRestaurants() method then calls the Yelp API and returns restaurants near that location
-            getRestaurants(mRecentAddress);
-        }
+//        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this); //retrieve our shared preferences from the preference manager
+//        mRecentAddress = mSharedPreferences.getString(Constants.PREFERENCES_LOCATION_KEY, null);//pull data from it by calling getString() and providing the key that corresponds to the data we'd like to retrieve. also pass in the default value null
+//        // The default value will be returned if the getString() method is unable to find a value that corresponds to the key we provided.
+//        if (mRecentAddress != null) {
+//            // we know we have a zip code saved, and we pass that zip code to our getRestaurants() method. As we know, the getRestaurants() method then calls the Yelp API and returns restaurants near that location
+//            getRestaurants(mRecentAddress);
+//        }
     }
 
     private void getRestaurants(String location) {
