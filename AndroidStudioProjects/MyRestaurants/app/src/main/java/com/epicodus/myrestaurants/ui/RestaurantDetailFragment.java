@@ -1,7 +1,9 @@
 package com.epicodus.myrestaurants.ui;
 
 
+import android.content.Intent;
 import android.media.Image;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -22,7 +24,7 @@ import butterknife.ButterKnife;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class RestaurantDetailFragment extends Fragment {
+public class RestaurantDetailFragment extends Fragment implements View.OnClickListener {
     //create final variables to hold our values that correspond to the maximum width & height we'd like our images resized to
     private static final int MAX_WIDTH = 400;
     private static final int MAX_HEIGHT = 300;
@@ -37,7 +39,7 @@ public class RestaurantDetailFragment extends Fragment {
 
     private Restaurant mRestaurant;
 
-//used instead of a constructor and returns a new instance of our RestaurantDetailFragment
+    //used instead of a constructor and returns a new instance of our RestaurantDetailFragment
     public static RestaurantDetailFragment newInstance(Restaurant restaurant) {
         // Required empty public constructor
         RestaurantDetailFragment restaurantDetailFragment = new RestaurantDetailFragment();
@@ -71,8 +73,34 @@ public class RestaurantDetailFragment extends Fragment {
         mPhoneLabel.setText(mRestaurant.getPhone());
         mAddressLabel.setText(android.text.TextUtils.join(", " , mRestaurant.getAddress()));
 
+        mWebsiteLabel.setOnClickListener(this);
+        mPhoneLabel.setOnClickListener(this);
+        mAddressLabel.setOnClickListener(this);
+
         return view;
 // default      return inflater.inflate(R.layout.fragment_restaurant_detail, container, false);
     }
+
+    @Override
+    public void onClick(View v) {
+        if (v == mWebsiteLabel) {
+            Intent webIntent = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse(mRestaurant.getWebsite()));
+            startActivity(webIntent);
+        }
+        if (v == mPhoneLabel) {
+            Intent phoneIntent = new Intent(Intent.ACTION_DIAL,
+                    Uri.parse("tel:" + mRestaurant.getPhone()));
+            startActivity(phoneIntent);
+        }
+        if (v == mAddressLabel) {
+            Intent mapIntent = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("geo:" + mRestaurant.getLatitude()
+                            + "," + mRestaurant.getLongitude()
+                            + "?q=(" + mRestaurant.getName() + ")"));
+            startActivity(mapIntent);
+        }
+    }
+
 
 }
