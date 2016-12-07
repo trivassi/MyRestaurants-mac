@@ -14,5 +14,6 @@ public class Constants {
     public static final String PREFERENCES_LOCATION_KEY = "location";
     public static final String FIREBASE_CHILD_SEARCHED_LOCATION = "searchedLocation";
     public static final String FIREBASE_CHILD_RESTAURANTS = "restaurants";
+    //this node doesn't exist yet, but Firebase will create it when it doesn't find an existing node with this name. Moving forward, we should always save the node names as constants in Constants.java
 
 }

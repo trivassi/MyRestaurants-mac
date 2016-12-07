@@ -81,7 +81,7 @@ public class RestaurantDetailFragment extends Fragment implements View.OnClickLi
         mPhoneLabel.setOnClickListener(this);
         mAddressLabel.setOnClickListener(this);
 
-        mSaveRestaurantButton.setOnClickListener(this);
+        mSaveRestaurantButton.setOnClickListener(this); //attach a click listener to our "Save Restaurants" button
 
         return view;
 // default      return inflater.inflate(R.layout.fragment_restaurant_detail, container, false);
@@ -89,7 +89,8 @@ public class RestaurantDetailFragment extends Fragment implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
-        if (v == mWebsiteLabel) {
+
+        if (v == mWebsiteLabel) {        //implicit intents
             Intent webIntent = new Intent(Intent.ACTION_VIEW,
                     Uri.parse(mRestaurant.getWebsite()));
             startActivity(webIntent);
@@ -107,11 +108,12 @@ public class RestaurantDetailFragment extends Fragment implements View.OnClickLi
             startActivity(mapIntent);
         }
 
-        if (v == mSaveRestaurantButton) {
-            DatabaseReference restaurantRef = FirebaseDatabase
+        if (v == mSaveRestaurantButton) { //add code to our onClick() method that will save a restaurant to our restaurants node in Firebase when the button is selected
+            DatabaseReference restaurantRef = FirebaseDatabase //create new DatabaseReference object
                     .getInstance()
-                    .getReference(Constants.FIREBASE_CHILD_RESTAURANTS);
-            restaurantRef.push().setValue(mRestaurant);
+                    .getReference(Constants.FIREBASE_CHILD_RESTAURANTS); //passing in the key for our restaurants node.
+            restaurantRef.push().setValue(mRestaurant); //passing in our restaurant object as an argument,
+            // to create a node for the selected restaurant with a unique push id.
             Toast.makeText(getContext(), "Saved", Toast.LENGTH_SHORT).show();
         }
     }

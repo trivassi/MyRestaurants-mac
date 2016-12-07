@@ -8,6 +8,14 @@ import java.util.List;
 /**
  * Created by T on 11/26/16.
  */
+//Each member variable name must match the name of the keys of our children nodes. In our case, this means we need to remove the ‘m’ prefix from variables in our Restaurant class.
+
+//Each member variable must be a valid JSON type. ArrayList is not a valid JSON type, so we need to change our address and categories variables to List types.
+
+//We must provide an empty constructor.
+
+//We must also provide public getter methods for every member variable.
+
 
 @Parcel
 public class Restaurant {
