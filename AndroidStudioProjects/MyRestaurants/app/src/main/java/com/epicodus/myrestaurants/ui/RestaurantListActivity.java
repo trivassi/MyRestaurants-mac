@@ -3,11 +3,16 @@ package com.epicodus.myrestaurants.ui;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.epicodus.myrestaurants.Constants;
 import com.epicodus.myrestaurants.R;
@@ -27,8 +32,10 @@ import okhttp3.Response;
 
 
 public class RestaurantListActivity extends AppCompatActivity {
-//    private SharedPreferences mSharedPreferences; //call the dedicated PreferenceManager to access shared preferences
-//    private String mRecentAddress;
+    private SharedPreferences mSharedPreferences; //call the dedicated PreferenceManager to access shared preferences
+    private SharedPreferences.Editor mEditor; //need access to the Editor to stash this new zip code in SharedPreferences
+    private String mRecentAddress;
+
 //    public static final String TAG = RestaurantListActivity.class.getSimpleName();
 
     @Bind(R.id.recyclerView) RecyclerView mRecyclerView;
@@ -45,7 +52,6 @@ public class RestaurantListActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         //list of items
-
         //toast
 
         Intent intent = getIntent();
@@ -55,14 +61,51 @@ public class RestaurantListActivity extends AppCompatActivity {
 
         getRestaurants(location);
 
-//        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this); //retrieve our shared preferences from the preference manager
-//        mRecentAddress = mSharedPreferences.getString(Constants.PREFERENCES_LOCATION_KEY, null);//pull data from it by calling getString() and providing the key that corresponds to the data we'd like to retrieve. also pass in the default value null
-//        // The default value will be returned if the getString() method is unable to find a value that corresponds to the key we provided.
-//        if (mRecentAddress != null) {
-//            // we know we have a zip code saved, and we pass that zip code to our getRestaurants() method. As we know, the getRestaurants() method then calls the Yelp API and returns restaurants near that location
-//            getRestaurants(mRecentAddress);
-//        }
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this); //retrieve our shared preferences from the preference manager
+        mRecentAddress = mSharedPreferences.getString(Constants.PREFERENCES_LOCATION_KEY, null);//pull data from it by calling getString() and providing the key that corresponds to the data we'd like to retrieve. also pass in the default value null
+        // The default value will be returned if the getString() method is unable to find a value that corresponds to the key we provided.
+        if (mRecentAddress != null) {
+            // we know we have a zip code saved, and we pass that zip code to our getRestaurants() method. As we know, the getRestaurants() method then calls the Yelp API and returns restaurants near that location
+            getRestaurants(mRecentAddress);
+        }
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_search, menu);
+        ButterKnife.bind(this); // inflate and bind our Views
+
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mEditor = mSharedPreferences.edit();
+
+        MenuItem menuItem = menu.findItem(R.id.action_search); //to retrieve a user’s search from the SearchView, we must grab the action_search menu item from our new layout
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+  //gather the input after the user has submitted something (and not every time they type a single character into the field)
+//place logic into onQueryTextSubmit
+            @Override
+            public boolean onQueryTextSubmit(String query) { //run automatically when the user submits a query into our SearchView
+                addToSharedPreferences(query); //save the zip code the user searches
+                getRestaurants(query); //begin executing a request to the Yelp API to return restaurants
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) { //whenever any changes to the SearchView contents occur
+                return false;
+            }
+        });
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item); //ensures that all functionality from the parent class (referred to here as super) will still apply despite us manually overriding portions of the menu's functionality.
+    }
+
 
     private void getRestaurants(String location) {
         //create a new instance of our YelpService,
@@ -103,6 +146,10 @@ public class RestaurantListActivity extends AppCompatActivity {
 
         });
 
+    }
+
+    private void addToSharedPreferences(String location) { //responsible for writing data to Shared Preferences
+        mEditor.putString(Constants.PREFERENCES_LOCATION_KEY, location).apply();
     }
 
 }
