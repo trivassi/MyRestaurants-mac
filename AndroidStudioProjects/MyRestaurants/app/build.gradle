@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
-apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 24
@@ -46,7 +45,6 @@ android {
     }
 }
 
-
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2') {
@@ -71,3 +69,5 @@ dependencies {
     compile 'com.firebaseui:firebase-ui-database:0.4.1'
     compile 'com.google.firebase:firebase-auth:9.0.2'
 }
+
+apply plugin: 'com.google.gms.google-services'

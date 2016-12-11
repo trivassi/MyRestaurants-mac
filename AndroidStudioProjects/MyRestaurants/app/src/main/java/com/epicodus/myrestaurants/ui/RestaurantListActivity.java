@@ -85,6 +85,7 @@ public class RestaurantListActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
   //gather the input after the user has submitted something (and not every time they type a single character into the field)
 //place logic into onQueryTextSubmit
+  //SearchView.OnQueryTextListener - two methods we will need to override: onQueryTextSubmit() and onQueryTextChange():
             @Override
             public boolean onQueryTextSubmit(String query) { //run automatically when the user submits a query into our SearchView
                 addToSharedPreferences(query); //save the zip code the user searches
